@@ -45,12 +45,15 @@ from ._optimize import (
     minimize,
     minimize_multi,
 )
-from ._problem import Problem
+from ._problem import Problem, VectorProblem
 from ._qp import solve_qp
 from ._status import IFAIL_MESSAGES
 from ._workspace import (
+    fit_sizes,
+    nlpjob_sizes,
     nlpql_sizes,
     nlpqlb_sizes,
+    nlpqlf_sizes,
     nlpqlg_sizes,
     nlpqlp_sizes,
     nlpqly_sizes,
@@ -64,15 +67,15 @@ __all__ = [
     "METHODS",
     "OptimizeResult",
     "Problem",
-    "VectorProblem",  # ruff:ignore[undefined-export]
+    "VectorProblem",
     "fit",
-    "fit_sizes",  # ruff:ignore[undefined-export]
+    "fit_sizes",
     "minimize",
     "minimize_multi",
-    "nlpjob_sizes",  # ruff:ignore[undefined-export]
+    "nlpjob_sizes",
     "nlpql_sizes",
     "nlpqlb_sizes",
-    "nlpqlf_sizes",  # ruff:ignore[undefined-export]
+    "nlpqlf_sizes",
     "nlpqlg_sizes",
     "nlpqlp_sizes",
     "nlpqly_sizes",
