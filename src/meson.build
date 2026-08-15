@@ -103,12 +103,21 @@ f2py_target = custom_target(
 # any dependency on the compiler installation.
 cc = meson.get_compiler('c')
 
+# Meson appends '-lgfortran' after the arguments given here, so relying on
+# '-static-libgfortran' alone is not enough: the C driver silently ignores
+# that flag on some toolchains and the trailing '-lgfortran' then resolves
+# against the import library, leaving the extension with a dependency on
+# libgfortran-*.dll that is not on the DLL search path at import time.
+# Pulling the runtimes in explicitly inside a '-Bstatic' block resolves
+# every Fortran symbol from the static archives first, so the later
+# '-lgfortran' has nothing left to add.
 if host_machine.system() == 'windows'
   fortran_link_args = cc.get_supported_link_arguments([
     '-static-libgfortran',
     '-static-libgcc',
     '-static-libquadmath',
     '-Wl,-Bstatic',
+    '-lgfortran',
     '-lquadmath',
     '-lwinpthread',
     '-Wl,-Bdynamic',
