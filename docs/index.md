@@ -1,8 +1,8 @@
 # NLPQL
 
-**Sequential quadratic programming for Python**
+**Non-Linear Programming by Quadratic Lagrangian (NLPQL) for Python**
 
-`nlpql` provides a Python front end and a complete Fortran
+`nlpql` provides an open source Python front end and a complete Fortran
 implementation of the NLPQL family of sequential quadratic programming
 codes for the smooth nonlinear program
 
@@ -15,6 +15,8 @@ min  f(x)
 
 ## Overview
 
+### Nonlinear programming
+
 | code     | purpose                                                          |
 | -------- | ---------------------------------------------------------------- |
 | `NLPQLP` | distributed and non-monotone line search, internal restarts       |
@@ -23,13 +25,26 @@ min  f(x)
 | `NLPQLB` | active set strategy for a very large number of constraints        |
 | `NLPQLG` | successive restarts for a stepwise improvement of local minima    |
 | `NLPQLF` | model functions evaluable only on a convex subset                 |
-| `NLPJOB` | multicriteria optimization, sixteen scalar transformations        |
+
+### Data fitting and multicriteria optimization
+
+Every code of this group transforms its problem into a nonlinear
+program of the form above and solves it with `NLPQLP`.
+
+| code     | purpose                                                          |
+| -------- | ---------------------------------------------------------------- |
 | `NLPLSQ` | constrained nonlinear least squares                               |
 | `NLPLSX` | least squares with a very large number of terms                   |
 | `NLPL1`  | sum of absolute values                                            |
-| `NLPINF` | maximum norm data fitting                                         |
+| `NLPINF` | maximum norm data fitting                                        |
 | `NLPMMX` | min-max optimization                                              |
-| `QL`     | convex quadratic programming, Goldfarb-Idnani primal-dual method  |
+| `NLPJOB` | multicriteria optimization, sixteen scalar transformations        |
+
+### Quadratic programming
+
+| code     | purpose                                                          |
+| -------- | ---------------------------------------------------------------- |
+| `QL`     | convex quadratic programming, solves the subproblem of every SQP step |
 
 ## Example
 

@@ -1,4 +1,4 @@
-"""NLPQL - sequential quadratic programming for Python.
+"""NLPQL - Non-Linear Programming by Quadratic Lagrangian (NLPQL) for Python.
 
 The package provides a Python front end and a complete Fortran
 implementation of the NLPQL family of sequential quadratic programming

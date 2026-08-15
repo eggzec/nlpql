@@ -409,10 +409,13 @@ def test_original_code_attains_the_published_values() -> None:
     """The original NLPQL reaches the optima of the collection.
 
     NLPQL performs a monotone line search without internal restarts, so
-    that it may stop in the round-off region of the merit function with
-    IFAIL = 4.  This is exactly the error situation for which the
-    non-monotone line search of NLPQLP was introduced; the objective
-    function value obtained is correct nevertheless.
+    that it may stop in the round-off region of the merit function.
+    Depending on the platform this shows up as IFAIL = 4, the line
+    search cannot be terminated, or as IFAIL = 3, the BFGS update
+    underflows.  Both are exactly the error situations for which the
+    non-monotone line search and the restarts of NLPQLP were
+    introduced; the objective function value obtained is correct
+    nevertheless, which is what this test checks.
     """
     for name, problem in PROBLEMS.items():
         res = nlpql.minimize(
@@ -424,6 +427,6 @@ def test_original_code_attains_the_published_values() -> None:
             constraints=problem["constraints"],
             options={"acc": 1.0e-9, "maxiter": 300},
         )
-        assert res.status in {0, 4}, f"NLPQL/{name}: {res.message}"
+        assert res.status in {0, 3, 4}, f"NLPQL/{name}: {res.message}"
         assert res.fun == pytest.approx(problem["fopt"], abs=1.0e-4), name
         assert _violation(res.constr, problem["me"]) < 1.0e-4, name

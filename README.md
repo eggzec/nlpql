@@ -1,6 +1,6 @@
 # NLPQL
 
-**Sequential quadratic programming for Python**
+**Non-Linear Programming by Quadratic Lagrangian (NLPQL) for Python**
 
 [![Tests](https://github.com/eggzec/nlpql/actions/workflows/test.yml/badge.svg)](https://github.com/eggzec/nlpql/actions/workflows/test.yml)
 [![Documentation](https://github.com/eggzec/nlpql/actions/workflows/docs.yml/badge.svg)](https://github.com/eggzec/nlpql/actions/workflows/docs.yml)
@@ -31,6 +31,8 @@ programs of this form and solved by the same algorithm.
 
 ## Available codes
 
+### Nonlinear programming
+
 | code     | purpose                                                          |
 | -------- | ---------------------------------------------------------------- |
 | `NLPQLP` | distributed and non-monotone line search, internal restarts       |
@@ -39,13 +41,26 @@ programs of this form and solved by the same algorithm.
 | `NLPQLB` | active set strategy for a very large number of constraints        |
 | `NLPQLG` | successive restarts for a stepwise improvement of local minima    |
 | `NLPQLF` | model functions evaluable only on a convex subset                 |
-| `NLPJOB` | multicriteria optimization, sixteen scalar transformations        |
+
+### Data fitting and multicriteria optimization
+
+Every code of this group transforms its problem into a nonlinear
+program of the form above and solves it with `NLPQLP`.
+
+| code     | purpose                                                          |
+| -------- | ---------------------------------------------------------------- |
 | `NLPLSQ` | constrained nonlinear least squares                               |
 | `NLPLSX` | least squares with a very large number of terms                   |
 | `NLPL1`  | sum of absolute values                                            |
-| `NLPINF` | maximum norm data fitting                                         |
+| `NLPINF` | maximum norm data fitting                                        |
 | `NLPMMX` | min-max optimization                                              |
-| `QL`     | convex quadratic programming, Goldfarb-Idnani primal-dual method  |
+| `NLPJOB` | multicriteria optimization, sixteen scalar transformations        |
+
+### Quadratic programming
+
+| code     | purpose                                                          |
+| -------- | ---------------------------------------------------------------- |
+| `QL`     | convex quadratic programming, solves the subproblem of every SQP step |
 
 ## Quick example
 
