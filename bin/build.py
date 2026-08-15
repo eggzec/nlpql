@@ -1,3 +1,4 @@
+# ruff:file-ignore[suspicious-subprocess-import, subprocess-without-shell-equals-true, missing-type-function-argument]  (build helper driving external commands)
 import argparse
 import logging
 import os
@@ -33,9 +34,11 @@ stderr_handler.setFormatter(formatter)
 logger.addHandler(stderr_handler)
 
 
-def run_command(command, cwd=None):
+def run_command(command, cwd=None) -> None:
     if cwd is None:
-        logger.warning("No working directory specified. Using current directory.")
+        logger.warning(
+            "No working directory specified. Using current directory."
+        )
         cwd = Path.cwd()
     else:
         cwd = Path(cwd)
@@ -53,7 +56,7 @@ def run_command(command, cwd=None):
         env=dict(**os.environ, PYTHONUNBUFFERED="1"),
         text=True,
     ) as proc:
-        with open(log_file_path, "a") as _log_file:
+        with open(log_file_path, "a", encoding="utf-8") as _log_file:
             for line in proc.stdout:
                 # _log_file.write(line)
                 logger.debug(line.rstrip())
@@ -67,21 +70,22 @@ def run_command(command, cwd=None):
     logger.info("Command executed successfully.")
 
 
-def install():
+def install() -> None:
     run_command("uv pip install . -v")
 
 
-def wheel():
+def wheel() -> None:
     run_command("uv build --wheel -v")
 
 
-def clean():
+def clean() -> None:
     logger.debug("Starting cleanup ...")
 
     run_command("uv pip uninstall nlpql")
 
     for entry in Path("").iterdir():
-        if entry.name in ["dist", "build", "lib", ".pytest_cache", ".ruff_cache"]:
+        stale = {"dist", "build", "lib", ".pytest_cache", ".ruff_cache"}
+        if entry.name in stale:
             logger.info(f"Removing '{entry}'")
             shutil.rmtree(entry)
         if entry.name == "bin" and entry.is_dir():
@@ -102,7 +106,7 @@ def clean():
     logger.info("Finished cleanup.")
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="nlpql Build Script")
     parser.add_argument(
         "mode",

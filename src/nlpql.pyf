@@ -1,0 +1,454 @@
+!    -*- f90 -*-
+!
+!    f2py signature file of the NLPQL package.
+!
+!    All array dimensions are hidden and deduced from the shapes of the
+!    arrays that are passed in, so that the Python signatures keep the
+!    argument order of the Fortran routines.  Every array which carries
+!    internal state from one call to the next is declared intent(in,out),
+!    because the codes communicate with the calling program by reverse
+!    communication.
+!
+python module _nlpql
+    interface
+
+        subroutine nlpqlpq(np,m,me,mmax,n,nmax,mnn2,x,f,g,df,dg,u,xl,xu,c,d,acc,accqp,stpmin,maxfun,maxit,maxnm,rho,iprint,mode,iout,ifail,wa,lwa,kwa,lkwa,act,lact,lql)
+            integer intent(hide),depend(x) :: np=shape(x,1)
+            integer intent(in) :: m
+            integer intent(in) :: me
+            integer intent(hide),depend(g) :: mmax=shape(g,0)
+            integer intent(in) :: n
+            integer intent(hide),depend(x) :: nmax=shape(x,0)
+            integer intent(hide),depend(u) :: mnn2=len(u)
+            double precision dimension(nmax,np),intent(in,out) :: x
+            double precision dimension(np),intent(in,out),depend(np) :: f
+            double precision dimension(mmax,np),intent(in,out) :: g
+            double precision dimension(nmax),intent(in,out),depend(nmax) :: df
+            double precision dimension(mmax,nmax),intent(in,out),depend(mmax,nmax) :: dg
+            double precision dimension(mnn2),intent(in,out) :: u
+            double precision dimension(nmax),intent(in),depend(nmax) :: xl
+            double precision dimension(nmax),intent(in),depend(nmax) :: xu
+            double precision dimension(nmax,nmax),intent(in,out),depend(nmax) :: c
+            double precision dimension(nmax),intent(in,out),depend(nmax) :: d
+            double precision intent(in) :: acc
+            double precision intent(in) :: accqp
+            double precision intent(in) :: stpmin
+            integer intent(in) :: maxfun
+            integer intent(in) :: maxit
+            integer intent(in) :: maxnm
+            double precision intent(in) :: rho
+            integer intent(in) :: iprint
+            integer intent(in) :: mode
+            integer intent(in) :: iout
+            integer intent(in,out) :: ifail
+            double precision dimension(lwa),intent(in,out) :: wa
+            integer intent(hide),depend(wa) :: lwa=len(wa)
+            integer dimension(lkwa),intent(in,out) :: kwa
+            integer intent(hide),depend(kwa) :: lkwa=len(kwa)
+            logical dimension(lact),intent(in,out) :: act
+            integer intent(hide),depend(act) :: lact=len(act)
+            logical intent(in) :: lql
+        end subroutine nlpqlpq
+
+        subroutine nlpql(m,me,mmax,n,nmax,mnn,x,f,g,df,dg,u,xl,xu,c,d,acc,maxfun,maxit,iprint,iout,ifail,wa,lwa,kwa,lkwa,active,lact)
+            integer intent(in) :: m
+            integer intent(in) :: me
+            integer intent(hide),depend(g) :: mmax=len(g)
+            integer intent(in) :: n
+            integer intent(hide),depend(x) :: nmax=len(x)
+            integer intent(hide),depend(u) :: mnn=len(u)
+            double precision dimension(nmax),intent(in,out) :: x
+            double precision intent(in,out) :: f
+            double precision dimension(mmax),intent(in,out) :: g
+            double precision dimension(nmax),intent(in,out),depend(nmax) :: df
+            double precision dimension(mmax,nmax),intent(in,out),depend(mmax,nmax) :: dg
+            double precision dimension(mnn),intent(in,out) :: u
+            double precision dimension(nmax),intent(in),depend(nmax) :: xl
+            double precision dimension(nmax),intent(in),depend(nmax) :: xu
+            double precision dimension(nmax,nmax),intent(in,out),depend(nmax) :: c
+            double precision dimension(nmax),intent(in,out),depend(nmax) :: d
+            double precision intent(in) :: acc
+            integer intent(in) :: maxfun
+            integer intent(in) :: maxit
+            integer intent(in) :: iprint
+            integer intent(in) :: iout
+            integer intent(in,out) :: ifail
+            double precision dimension(lwa),intent(in,out) :: wa
+            integer intent(hide),depend(wa) :: lwa=len(wa)
+            integer dimension(lkwa),intent(in,out) :: kwa
+            integer intent(hide),depend(kwa) :: lkwa=len(kwa)
+            logical dimension(lact),intent(in,out) :: active
+            integer intent(hide),depend(active) :: lact=len(active)
+        end subroutine nlpql
+
+        subroutine nlpqly(m,me,n,x,f,g,xl,xu,acc,maxit,iprint,iout,ifail,wa,lwa,kwa,lkwa,act,lact)
+            integer intent(hide),depend(g) :: m=len(g)
+            integer intent(in) :: me
+            integer intent(hide),depend(x) :: n=len(x)
+            double precision dimension(n),intent(in,out) :: x
+            double precision intent(in,out) :: f
+            double precision dimension(m),intent(in,out) :: g
+            double precision dimension(n),intent(in),depend(n) :: xl
+            double precision dimension(n),intent(in),depend(n) :: xu
+            double precision intent(in) :: acc
+            integer intent(in) :: maxit
+            integer intent(in) :: iprint
+            integer intent(in) :: iout
+            integer intent(in,out) :: ifail
+            double precision dimension(lwa),intent(in,out) :: wa
+            integer intent(hide),depend(wa) :: lwa=len(wa)
+            integer dimension(lkwa),intent(in,out) :: kwa
+            integer intent(hide),depend(kwa) :: lkwa=len(kwa)
+            logical dimension(lact),intent(in,out) :: act
+            integer intent(hide),depend(act) :: lact=len(act)
+        end subroutine nlpqly
+
+        subroutine nlpqlbq(m,me,mw,mwmax,n,nmax,mnn2,x,f,g,df,dg,u,xl,xu,c,d,acc,accqp,maxfun,maxit,maxnm,rhob,iprint,iout,ifail,wa,lwa,kwa,lkwa,act,lact)
+            integer intent(hide),depend(g) :: m=len(g)
+            integer intent(in) :: me
+            integer intent(in) :: mw
+            integer intent(hide),depend(dg) :: mwmax=shape(dg,0)
+            integer intent(in) :: n
+            integer intent(hide),depend(x) :: nmax=len(x)
+            integer intent(hide),depend(u) :: mnn2=len(u)
+            double precision dimension(nmax),intent(in,out) :: x
+            double precision intent(in,out) :: f
+            double precision dimension(m),intent(in,out) :: g
+            double precision dimension(nmax),intent(in,out),depend(nmax) :: df
+            double precision dimension(mwmax,nmax),intent(in,out),depend(nmax) :: dg
+            double precision dimension(mnn2),intent(in,out) :: u
+            double precision dimension(nmax),intent(in),depend(nmax) :: xl
+            double precision dimension(nmax),intent(in),depend(nmax) :: xu
+            double precision dimension(nmax,nmax),intent(in,out),depend(nmax) :: c
+            double precision dimension(nmax),intent(in,out),depend(nmax) :: d
+            double precision intent(in) :: acc
+            double precision intent(in) :: accqp
+            integer intent(in) :: maxfun
+            integer intent(in) :: maxit
+            integer intent(in) :: maxnm
+            double precision intent(in) :: rhob
+            integer intent(in) :: iprint
+            integer intent(in) :: iout
+            integer intent(in,out) :: ifail
+            double precision dimension(lwa),intent(in,out) :: wa
+            integer intent(hide),depend(wa) :: lwa=len(wa)
+            integer dimension(lkwa),intent(in,out) :: kwa
+            integer intent(hide),depend(kwa) :: lkwa=len(kwa)
+            logical dimension(lact),intent(in,out) :: act
+            integer intent(hide),depend(act) :: lact=len(act)
+        end subroutine nlpqlbq
+
+        subroutine nlpqlgq(np,m,me,mmax,n,nmax,mnn2,x,f,g,df,dg,u,xl,xu,c,d,acc,accqp,stpmin,maxfun,maxit,maxnm,rho,ncycle,iprint,mode,iout,ifail,wa,lwa,kwa,lkwa,act,lact,lql)
+            integer intent(hide),depend(x) :: np=shape(x,1)
+            integer intent(in) :: m
+            integer intent(in) :: me
+            integer intent(hide),depend(g) :: mmax=shape(g,0)
+            integer intent(in) :: n
+            integer intent(hide),depend(x) :: nmax=shape(x,0)
+            integer intent(hide),depend(u) :: mnn2=len(u)
+            double precision dimension(nmax,np),intent(in,out) :: x
+            double precision dimension(np),intent(in,out),depend(np) :: f
+            double precision dimension(mmax,np),intent(in,out) :: g
+            double precision dimension(nmax),intent(in,out),depend(nmax) :: df
+            double precision dimension(mmax,nmax),intent(in,out),depend(mmax,nmax) :: dg
+            double precision dimension(mnn2),intent(in,out) :: u
+            double precision dimension(nmax),intent(in),depend(nmax) :: xl
+            double precision dimension(nmax),intent(in),depend(nmax) :: xu
+            double precision dimension(nmax,nmax),intent(in,out),depend(nmax) :: c
+            double precision dimension(nmax),intent(in,out),depend(nmax) :: d
+            double precision intent(in) :: acc
+            double precision intent(in) :: accqp
+            double precision intent(in) :: stpmin
+            integer intent(in) :: maxfun
+            integer intent(in) :: maxit
+            integer intent(in) :: maxnm
+            double precision intent(in) :: rho
+            integer intent(in) :: ncycle
+            integer intent(in) :: iprint
+            integer intent(in) :: mode
+            integer intent(in) :: iout
+            integer intent(in,out) :: ifail
+            double precision dimension(lwa),intent(in,out) :: wa
+            integer intent(hide),depend(wa) :: lwa=len(wa)
+            integer dimension(lkwa),intent(in,out) :: kwa
+            integer intent(hide),depend(kwa) :: lkwa=len(kwa)
+            logical dimension(lact),intent(in,out) :: act
+            integer intent(hide),depend(act) :: lact=len(act)
+            logical intent(in) :: lql
+        end subroutine nlpqlgq
+
+        subroutine ql(m,me,mmax,n,nmax,mnn,c,d,a,b,xl,xu,x,u,eps,mode,iout,ifail,iprint,war,lwar,iwar,liwar)
+            integer intent(in) :: m
+            integer intent(in) :: me
+            integer intent(hide),depend(a) :: mmax=shape(a,0)
+            integer intent(in) :: n
+            integer intent(hide),depend(c) :: nmax=shape(c,0)
+            integer intent(hide),depend(u) :: mnn=len(u)
+            double precision dimension(nmax,nmax),intent(in,out) :: c
+            double precision dimension(nmax),intent(in),depend(nmax) :: d
+            double precision dimension(mmax,nmax),intent(in),depend(nmax) :: a
+            double precision dimension(mmax),intent(in),depend(mmax) :: b
+            double precision dimension(nmax),intent(in),depend(nmax) :: xl
+            double precision dimension(nmax),intent(in),depend(nmax) :: xu
+            double precision dimension(nmax),intent(in,out),depend(nmax) :: x
+            double precision dimension(mnn),intent(in,out) :: u
+            double precision intent(in) :: eps
+            integer intent(in) :: mode
+            integer intent(in) :: iout
+            integer intent(in,out) :: ifail
+            integer intent(in) :: iprint
+            double precision dimension(lwar),intent(in,out) :: war
+            integer intent(hide),depend(war) :: lwar=len(war)
+            integer dimension(liwar),intent(in,out) :: iwar
+            integer intent(hide),depend(iwar) :: liwar=len(iwar)
+        end subroutine ql
+
+        subroutine nlplsqq(l,m,me,lmmax,n,lnmax,lmnn2,x,f,g,df,dg,u,xl,xu,c,d,acc,accqp,maxfun,maxit,maxnm,rho,iprint,iout,ifail,wa,lwa,kwa,lkwa,act,lact)
+            integer intent(in) :: l
+            integer intent(in) :: m
+            integer intent(in) :: me
+            integer intent(hide),depend(dg) :: lmmax=shape(dg,0)
+            integer intent(in) :: n
+            integer intent(hide),depend(dg) :: lnmax=shape(dg,1)
+            integer intent(hide),depend(u) :: lmnn2=len(u)
+            double precision dimension(lnmax),intent(in,out) :: x
+            double precision intent(in,out) :: f
+            double precision dimension(lmmax),intent(in,out) :: g
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: df
+            double precision dimension(lmmax,lnmax),intent(in,out) :: dg
+            double precision dimension(lmnn2),intent(in,out) :: u
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: xl
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: xu
+            double precision dimension(lnmax,lnmax),intent(in,out),depend(lnmax) :: c
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: d
+            double precision intent(in) :: acc
+            double precision intent(in) :: accqp
+            integer intent(in) :: maxfun
+            integer intent(in) :: maxit
+            integer intent(in) :: maxnm
+            double precision intent(in) :: rho
+            integer intent(in) :: iprint
+            integer intent(in) :: iout
+            integer intent(in,out) :: ifail
+            double precision dimension(lwa),intent(in,out) :: wa
+            integer intent(hide),depend(wa) :: lwa=len(wa)
+            integer dimension(lkwa),intent(in,out) :: kwa
+            integer intent(hide),depend(kwa) :: lkwa=len(kwa)
+            logical dimension(lact),intent(in,out) :: act
+            integer intent(hide),depend(act) :: lact=len(act)
+        end subroutine nlplsqq
+
+        subroutine nlplsxq(l,m,me,lmmax,n,lnmax,lmnn2,x,f,g,df,dg,u,xl,xu,c,d,acc,accqp,maxfun,maxit,maxnm,rho,iprint,iout,ifail,wa,lwa,kwa,lkwa,act,lact)
+            integer intent(in) :: l
+            integer intent(in) :: m
+            integer intent(in) :: me
+            integer intent(hide),depend(dg) :: lmmax=shape(dg,0)
+            integer intent(in) :: n
+            integer intent(hide),depend(dg) :: lnmax=shape(dg,1)
+            integer intent(hide),depend(u) :: lmnn2=len(u)
+            double precision dimension(lnmax),intent(in,out) :: x
+            double precision intent(in,out) :: f
+            double precision dimension(lmmax),intent(in,out) :: g
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: df
+            double precision dimension(lmmax,lnmax),intent(in,out) :: dg
+            double precision dimension(lmnn2),intent(in,out) :: u
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: xl
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: xu
+            double precision dimension(lnmax,lnmax),intent(in,out),depend(lnmax) :: c
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: d
+            double precision intent(in) :: acc
+            double precision intent(in) :: accqp
+            integer intent(in) :: maxfun
+            integer intent(in) :: maxit
+            integer intent(in) :: maxnm
+            double precision intent(in) :: rho
+            integer intent(in) :: iprint
+            integer intent(in) :: iout
+            integer intent(in,out) :: ifail
+            double precision dimension(lwa),intent(in,out) :: wa
+            integer intent(hide),depend(wa) :: lwa=len(wa)
+            integer dimension(lkwa),intent(in,out) :: kwa
+            integer intent(hide),depend(kwa) :: lkwa=len(kwa)
+            logical dimension(lact),intent(in,out) :: act
+            integer intent(hide),depend(act) :: lact=len(act)
+        end subroutine nlplsxq
+
+        subroutine nlpl1q(l,m,me,lmmax,n,lnmax,lmnn2,x,f,g,df,dg,u,xl,xu,c,d,acc,accqp,maxfun,maxit,maxnm,rho,iprint,iout,ifail,wa,lwa,kwa,lkwa,act,lact)
+            integer intent(in) :: l
+            integer intent(in) :: m
+            integer intent(in) :: me
+            integer intent(hide),depend(dg) :: lmmax=shape(dg,0)
+            integer intent(in) :: n
+            integer intent(hide),depend(dg) :: lnmax=shape(dg,1)
+            integer intent(hide),depend(u) :: lmnn2=len(u)
+            double precision dimension(lnmax),intent(in,out) :: x
+            double precision intent(in,out) :: f
+            double precision dimension(lmmax),intent(in,out) :: g
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: df
+            double precision dimension(lmmax,lnmax),intent(in,out) :: dg
+            double precision dimension(lmnn2),intent(in,out) :: u
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: xl
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: xu
+            double precision dimension(lnmax,lnmax),intent(in,out),depend(lnmax) :: c
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: d
+            double precision intent(in) :: acc
+            double precision intent(in) :: accqp
+            integer intent(in) :: maxfun
+            integer intent(in) :: maxit
+            integer intent(in) :: maxnm
+            double precision intent(in) :: rho
+            integer intent(in) :: iprint
+            integer intent(in) :: iout
+            integer intent(in,out) :: ifail
+            double precision dimension(lwa),intent(in,out) :: wa
+            integer intent(hide),depend(wa) :: lwa=len(wa)
+            integer dimension(lkwa),intent(in,out) :: kwa
+            integer intent(hide),depend(kwa) :: lkwa=len(kwa)
+            logical dimension(lact),intent(in,out) :: act
+            integer intent(hide),depend(act) :: lact=len(act)
+        end subroutine nlpl1q
+
+        subroutine nlpinfq(l,m,me,lmmax,n,lnmax,lmnn2,x,f,g,df,dg,u,xl,xu,c,d,acc,accqp,maxfun,maxit,maxnm,rho,iprint,iout,ifail,wa,lwa,kwa,lkwa,act,lact)
+            integer intent(in) :: l
+            integer intent(in) :: m
+            integer intent(in) :: me
+            integer intent(hide),depend(dg) :: lmmax=shape(dg,0)
+            integer intent(in) :: n
+            integer intent(hide),depend(dg) :: lnmax=shape(dg,1)
+            integer intent(hide),depend(u) :: lmnn2=len(u)
+            double precision dimension(lnmax),intent(in,out) :: x
+            double precision intent(in,out) :: f
+            double precision dimension(lmmax),intent(in,out) :: g
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: df
+            double precision dimension(lmmax,lnmax),intent(in,out) :: dg
+            double precision dimension(lmnn2),intent(in,out) :: u
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: xl
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: xu
+            double precision dimension(lnmax,lnmax),intent(in,out),depend(lnmax) :: c
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: d
+            double precision intent(in) :: acc
+            double precision intent(in) :: accqp
+            integer intent(in) :: maxfun
+            integer intent(in) :: maxit
+            integer intent(in) :: maxnm
+            double precision intent(in) :: rho
+            integer intent(in) :: iprint
+            integer intent(in) :: iout
+            integer intent(in,out) :: ifail
+            double precision dimension(lwa),intent(in,out) :: wa
+            integer intent(hide),depend(wa) :: lwa=len(wa)
+            integer dimension(lkwa),intent(in,out) :: kwa
+            integer intent(hide),depend(kwa) :: lkwa=len(kwa)
+            logical dimension(lact),intent(in,out) :: act
+            integer intent(hide),depend(act) :: lact=len(act)
+        end subroutine nlpinfq
+
+        subroutine nlpmmxq(l,m,me,lmmax,n,lnmax,lmnn2,x,f,g,df,dg,u,xl,xu,c,d,acc,accqp,maxfun,maxit,maxnm,rho,iprint,iout,ifail,wa,lwa,kwa,lkwa,act,lact)
+            integer intent(in) :: l
+            integer intent(in) :: m
+            integer intent(in) :: me
+            integer intent(hide),depend(dg) :: lmmax=shape(dg,0)
+            integer intent(in) :: n
+            integer intent(hide),depend(dg) :: lnmax=shape(dg,1)
+            integer intent(hide),depend(u) :: lmnn2=len(u)
+            double precision dimension(lnmax),intent(in,out) :: x
+            double precision intent(in,out) :: f
+            double precision dimension(lmmax),intent(in,out) :: g
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: df
+            double precision dimension(lmmax,lnmax),intent(in,out) :: dg
+            double precision dimension(lmnn2),intent(in,out) :: u
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: xl
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: xu
+            double precision dimension(lnmax,lnmax),intent(in,out),depend(lnmax) :: c
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: d
+            double precision intent(in) :: acc
+            double precision intent(in) :: accqp
+            integer intent(in) :: maxfun
+            integer intent(in) :: maxit
+            integer intent(in) :: maxnm
+            double precision intent(in) :: rho
+            integer intent(in) :: iprint
+            integer intent(in) :: iout
+            integer intent(in,out) :: ifail
+            double precision dimension(lwa),intent(in,out) :: wa
+            integer intent(hide),depend(wa) :: lwa=len(wa)
+            integer dimension(lkwa),intent(in,out) :: kwa
+            integer intent(hide),depend(kwa) :: lkwa=len(kwa)
+            logical dimension(lact),intent(in,out) :: act
+            integer intent(hide),depend(act) :: lact=len(act)
+        end subroutine nlpmmxq
+
+        subroutine nlpjob(l,m,me,lmmax,n,lnmax,lmnn2,model,imin,x,f,g,df,dg,u,xl,xu,w,fk,fw,acc,accqp,maxfun,maxit,iprint,iout,ifail,wa,lwa,kwa,lkwa,logwa,llogwa)
+            integer intent(in) :: l
+            integer intent(in) :: m
+            integer intent(in) :: me
+            integer intent(hide),depend(dg) :: lmmax=shape(dg,0)
+            integer intent(in) :: n
+            integer intent(hide),depend(dg) :: lnmax=shape(dg,1)
+            integer intent(hide),depend(u) :: lmnn2=len(u)
+            integer intent(in) :: model
+            integer intent(in) :: imin
+            double precision dimension(lnmax),intent(in,out) :: x
+            double precision intent(in,out) :: f
+            double precision dimension(lmmax),intent(in,out) :: g
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: df
+            double precision dimension(lmmax,lnmax),intent(in,out) :: dg
+            double precision dimension(lmnn2),intent(in,out) :: u
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: xl
+            double precision dimension(lnmax),intent(in,out),depend(lnmax) :: xu
+            double precision dimension(l),intent(in),depend(l) :: w
+            double precision dimension(l),intent(in),depend(l) :: fk
+            double precision dimension(l),intent(in,out),depend(l) :: fw
+            double precision intent(in) :: acc
+            double precision intent(in) :: accqp
+            integer intent(in) :: maxfun
+            integer intent(in) :: maxit
+            integer intent(in) :: iprint
+            integer intent(in) :: iout
+            integer intent(in,out) :: ifail
+            double precision dimension(lwa),intent(in,out) :: wa
+            integer intent(hide),depend(wa) :: lwa=len(wa)
+            integer dimension(lkwa),intent(in,out) :: kwa
+            integer intent(hide),depend(kwa) :: lkwa=len(kwa)
+            logical dimension(llogwa),intent(in,out) :: logwa
+            integer intent(hide),depend(logwa) :: llogwa=len(logwa)
+        end subroutine nlpjob
+
+        subroutine nlpqlfq(mf,mef,m,mmax,n,nmax,mnn2,x,f,g,df,dg,u,xl,xu,c,d,acc,accf,accqp,maxfun,maxit,maxnm,rho,iprint,iout,ifail,wa,lwa,kwa,lkwa,act,lact)
+            integer intent(in) :: mf
+            integer intent(in) :: mef
+            integer intent(in) :: m
+            integer intent(hide),depend(dg) :: mmax=shape(dg,0)
+            integer intent(in) :: n
+            integer intent(hide),depend(dg) :: nmax=shape(dg,1)
+            integer intent(hide),depend(u) :: mnn2=len(u)
+            double precision dimension(nmax),intent(in,out) :: x
+            double precision intent(in,out) :: f
+            double precision dimension(mmax),intent(in,out) :: g
+            double precision dimension(nmax),intent(in,out),depend(nmax) :: df
+            double precision dimension(mmax,nmax),intent(in,out) :: dg
+            double precision dimension(mnn2),intent(in,out) :: u
+            double precision dimension(nmax),intent(in),depend(nmax) :: xl
+            double precision dimension(nmax),intent(in),depend(nmax) :: xu
+            double precision dimension(nmax,nmax),intent(in,out),depend(nmax) :: c
+            double precision dimension(nmax),intent(in,out),depend(nmax) :: d
+            double precision intent(in) :: acc
+            double precision intent(in) :: accf
+            double precision intent(in) :: accqp
+            integer intent(in) :: maxfun
+            integer intent(in) :: maxit
+            integer intent(in) :: maxnm
+            double precision intent(in) :: rho
+            integer intent(in) :: iprint
+            integer intent(in) :: iout
+            integer intent(in,out) :: ifail
+            double precision dimension(lwa),intent(in,out) :: wa
+            integer intent(hide),depend(wa) :: lwa=len(wa)
+            integer dimension(lkwa),intent(in,out) :: kwa
+            integer intent(hide),depend(kwa) :: lkwa=len(kwa)
+            logical dimension(lact),intent(in,out) :: act
+            integer intent(hide),depend(act) :: lact=len(act)
+        end subroutine nlpqlfq
+
+    end interface
+end python module _nlpql

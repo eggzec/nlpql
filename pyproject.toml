@@ -19,15 +19,20 @@ maintainers = [
     { name = "M Laraib Ali", email = "laraibg786@outlook.com" }
 ]
 readme = "README.md"
-license = "GPL-3.0"
+license = "GPL-3.0-or-later"
 keywords = [
-    "python"
+    "optimization",
+    "nonlinear-programming",
+    "sqp",
+    "quadratic-programming",
+    "nlpql",
+    "nlpqlp",
+    "fortran"
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Science/Research",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
@@ -119,10 +124,6 @@ select = [
 ]
 
 ignore = []
-
-[tool.ruff.lint.per-file-ignores]
-"**/__init__.py" = ["non-empty-init-module"]
-"tests/*.py" = []
 
 [tool.ruff.format]
 docstring-code-format = true

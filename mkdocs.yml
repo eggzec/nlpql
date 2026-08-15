@@ -51,8 +51,8 @@ theme:
         name: Switch to light mode
 
   # Logo and favicon
-  favicon: assets/images/nlpql.ico
-  logo: assets/images/nlpql.png
+  favicon: assets/images/nlpql.svg
+  logo: assets/images/nlpql.svg
 
   # Font configuration
   font:
