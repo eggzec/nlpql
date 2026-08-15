@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+# ruff:file-ignore[suspicious-subprocess-import]  (build helper driving external commands)
+# !/usr/bin/env python3
 
 import subprocess
 import sys
@@ -16,7 +17,7 @@ except ModuleNotFoundError:
     from setuptools_scm import get_version
 
 
-def main():
+def main() -> None:
     root = Path(__file__).parent.parent
     version = get_version(root=root)
     if version is None:

@@ -1,0 +1,47 @@
+/* Additional styling of the NLPQL documentation. */
+
+/* Display math is often wider than a narrow viewport, let it scroll
+   inside its own box instead of stretching the page. */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+
+/* Slightly larger display formulas, the theory page is formula heavy. */
+.katex {
+  font-size: 1.05em;
+}
+
+/* Until the math is rendered the raw source would flash up, which is
+   distracting on the theory page.  The auto-render pass removes the
+   wrapper class, so this only hides the source for a moment. */
+.arithmatex > .MathJax_Preview {
+  display: none;
+}
+
+/* The parameter tables of the API reference are wide; keep them
+   readable and let them scroll rather than wrap every column. */
+.md-typeset table:not([class]) {
+  display: block;
+  overflow-x: auto;
+  white-space: normal;
+}
+
+.md-typeset table:not([class]) th,
+.md-typeset table:not([class]) td {
+  vertical-align: top;
+}
+
+/* Fortran and console listings quote fixed form sources, so preserve
+   the column layout instead of soft wrapping it. */
+.md-typeset pre > code {
+  white-space: pre;
+}
+
+/* The logo is a dark tile, give it a little breathing room. */
+.md-header__button.md-logo img,
+.md-header__button.md-logo svg {
+  height: 1.6rem;
+  width: 1.6rem;
+}
