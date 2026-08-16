@@ -123,7 +123,7 @@ C
 C
  1000 FORMAT (/,4X,68('-'),/,
      /   5X,'START OF THE SEQUENTIAL QUADRATIC PROGRAMMING ALGORITHM',
-     /   /,5X,'NLPQLP, VERSION 4.2',/,4X,68('-'),/)
+     /   /,4X,68('-'),/)
  1010 FORMAT (5X,'Parameters:',/,
      /   8X,'N      = ',I8,/,
      /   8X,'M      = ',I8,/,

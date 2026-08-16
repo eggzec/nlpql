@@ -14,6 +14,8 @@ the forward difference approximation of the Python layer.
 
 from __future__ import annotations
 
+from collections.abc import Callable
+
 import nlpql
 import numpy as np
 import pytest
@@ -319,6 +321,183 @@ PROBLEMS = {
     "TP71": _tp71(),
     "TP76": _tp76(),
 }
+
+
+def _central_jacobian(
+    fun: Callable[[np.ndarray], object], x: np.ndarray, size: int
+) -> np.ndarray:
+    """Return a central difference Jacobian of a vector valued function.
+
+    The optimality check below has to be independent of the derivatives
+    that were handed to the solver, otherwise an error in a test problem
+    gradient would cancel out and remain unnoticed.
+
+    Args:
+        fun: Function returning either a scalar or a vector.
+        x: Point at which the Jacobian is evaluated.
+        size: Number of components of the function value.
+
+    Returns:
+        The Jacobian of shape ``(size, x.size)``.
+    """
+    out = np.zeros((size, x.size))
+    for i in range(x.size):
+        eta = 1.0e-6 * max(1.0, abs(x[i]))
+        xp, xm = x.copy(), x.copy()
+        xp[i] += eta
+        xm[i] -= eta
+        fp = np.atleast_1d(np.asarray(fun(xp), dtype=float)).ravel()
+        fm = np.atleast_1d(np.asarray(fun(xm), dtype=float)).ravel()
+        out[:, i] = (fp - fm) / (2.0 * eta)
+    return out
+
+
+def _constraints(problem: dict) -> Callable[[np.ndarray], np.ndarray]:
+    """Return one function evaluating all constraints of a problem.
+
+    Args:
+        problem: Problem description of the collection.
+
+    Returns:
+        A function mapping a point to the vector of constraint values.
+    """
+    groups = problem["constraints"] or ()
+    if isinstance(groups, dict):
+        groups = (groups,)
+
+    def gvec(z: np.ndarray) -> np.ndarray:
+        if not groups:
+            return np.zeros(0)
+        return np.concatenate([
+            np.atleast_1d(np.asarray(c["fun"](z), dtype=float)).ravel()
+            for c in groups
+        ])
+
+    return gvec
+
+
+def _bounds(problem: dict, n: int) -> tuple[np.ndarray, np.ndarray]:
+    """Return the bounds of a problem as two dense vectors.
+
+    Args:
+        problem: Problem description of the collection.
+        n: Number of variables.
+
+    Returns:
+        The lower and the upper bounds, infinite where absent.
+    """
+    given = problem["bounds"] or [(None, None)] * n
+    lo = np.array([b[0] if b[0] is not None else -np.inf for b in given])
+    up = np.array([b[1] if b[1] is not None else np.inf for b in given])
+    return lo, up
+
+
+def _kkt_residuals(problem: dict, res: nlpql.OptimizeResult) -> dict:
+    """Return the optimality residuals of a computed solution.
+
+    The Karush-Kuhn-Tucker conditions of
+
+        min f(x), g_j(x) = 0 (j <= me), g_j(x) >= 0 (j > me), xl <= x <= xu
+
+    are checked from the returned iterate and the returned multipliers
+    alone, without reference to any published optimum.  The stationarity
+    residual is measured relative to the size of the gradient, since it
+    inherits the accuracy of the multipliers which is only of the order
+    of the square root of the final accuracy for a degenerate active set.
+
+    Args:
+        problem: Problem description of the collection.
+        res: Result returned by the optimizer.
+
+    Returns:
+        The four residuals ``feasibility``, ``dual``, ``complementarity``
+        and ``stationarity``.
+    """
+    x = np.asarray(res.x, dtype=float)
+    me = problem["me"]
+    gvec = _constraints(problem)
+    g = gvec(x)
+    m = g.size
+    lo, up = _bounds(problem, x.size)
+
+    u = np.asarray(res.multipliers, dtype=float)
+    ucon = u[:m]
+    ulo = u[m : m + x.size]
+    uup = u[m + x.size : m + x.size + x.size]
+
+    grad = _central_jacobian(problem["fun"], x, 1)[0]
+    jac = _central_jacobian(gvec, x, m) if m else np.zeros((0, x.size))
+    lagrange = grad - jac.T @ ucon - ulo + uup
+
+    return {
+        "feasibility": max(
+            float(np.max(np.abs(g[:me]))) if me else 0.0,
+            float(np.max(np.maximum(0.0, -g[me:]))) if m > me else 0.0,
+            float(np.max(np.maximum(0.0, lo - x))),
+            float(np.max(np.maximum(0.0, x - up))),
+        ),
+        "dual": max(
+            float(np.max(np.maximum(0.0, -ucon[me:]))) if m > me else 0.0,
+            float(np.max(np.maximum(0.0, -ulo))),
+            float(np.max(np.maximum(0.0, -uup))),
+        ),
+        "complementarity": _complementarity([
+            (ucon[me:], g[me:]),
+            (ulo, np.where(np.isfinite(lo), x - lo, 0.0)),
+            (uup, np.where(np.isfinite(up), up - x, 0.0)),
+        ]),
+        "stationarity": float(np.max(np.abs(lagrange)))
+        / (1.0 + float(np.max(np.abs(grad)))),
+    }
+
+
+def _complementarity(
+    blocks: list[tuple[np.ndarray, np.ndarray]],
+) -> float:
+    """Return the largest product of a multiplier and its slack.
+
+    A bound that is not set contributes a zero slack, so that its
+    multiplier, which is zero as well, cannot spoil the residual.
+
+    Args:
+        blocks: Pairs of multipliers and the corresponding slacks, one
+            pair for the constraints and one for each set of bounds.
+
+    Returns:
+        The maximum norm of the complementarity residual.
+    """
+    return max(
+        (
+            float(np.max(np.abs(u * s)))
+            for u, s in blocks
+            if u.size and s.size
+        ),
+        default=0.0,
+    )
+
+
+@pytest.mark.parametrize("name", sorted(PROBLEMS))
+def test_kkt_conditions_hold_at_the_solution(name: str) -> None:
+    """The returned point and multipliers satisfy the KKT conditions.
+
+    This is the check that does not consult a published value at all.
+    It confirms that the multipliers which the code reports really are
+    the multipliers of the point which it reports.
+    """
+    problem = PROBLEMS[name]
+    res = nlpql.minimize(
+        problem["fun"],
+        problem["x0"],
+        jac=problem["jac"],
+        bounds=problem["bounds"],
+        constraints=problem["constraints"],
+        options={"acc": 1.0e-12, "maxiter": 400},
+    )
+    residual = _kkt_residuals(problem, res)
+    assert residual["feasibility"] < 1.0e-7, f"{name}: {residual}"
+    assert residual["dual"] < 1.0e-9, f"{name}: {residual}"
+    assert residual["complementarity"] < 1.0e-6, f"{name}: {residual}"
+    assert residual["stationarity"] < 1.0e-4, f"{name}: {residual}"
 
 
 def _violation(g: np.ndarray, me: int) -> float:
