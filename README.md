@@ -1,3 +1,5 @@
+![NLPQL](docs/assets/nlpql-banner.png)
+
 # NLPQL
 
 **Non-Linear Programming by Quadratic Lagrangian (NLPQL) for Python**
