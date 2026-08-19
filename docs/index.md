@@ -1,4 +1,4 @@
-![NLPQL](assets/nlpql-banner.png)
+![NLPQL](https://raw.githubusercontent.com/eggzec/nlpql/master/docs/assets/nlpql-banner.png)
 
 # NLPQL
 
